@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>속초 2박3일 여행 플래너</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="속초여행">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: -apple-system, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; background: #f3f5f8; color: #222; }
+  header { background: #1F3864; color: #fff; padding: 16px 18px 14px; }
+  header h1 { font-size: 17px; margin: 0 0 2px; }
+  header .sub { font-size: 11.5px; opacity: 0.85; }
+
+  /* Hide the radio inputs that drive tab switching */
+  input.tabRadio { position: absolute; opacity: 0; pointer-events: none; }
+
+  #tabs { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  #tabs label {
+    border: none; background: rgba(255,255,255,0.15); color: #fff; padding: 8px 14px;
+    border-radius: 20px; cursor: pointer; font-size: 12.5px; font-weight: 600; display: inline-block;
+  }
+  #tab1:checked ~ header #tabs label[for="tab1"],
+  #tab2:checked ~ header #tabs label[for="tab2"],
+  #tab3:checked ~ header #tabs label[for="tab3"] { background: #fff; color: #1F3864; }
+
+  main { max-width: 480px; margin: 0 auto; padding: 14px; }
+  .panel { display: none; }
+  #tab1:checked ~ main .panel1,
+  #tab2:checked ~ main .panel2,
+  #tab3:checked ~ main .panel3 { display: block; }
+
+  .mapCard { background: #fff; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); padding: 8px; margin-bottom: 6px; }
+  .mapCard iframe { width: 100%; height: 280px; border: 0; border-radius: 8px; display: block; }
+  .mapLinkBtn2 {
+    display: block; text-align: center; padding: 10px; text-decoration: none;
+    color: #1F3864; font-size: 13px; font-weight: 700; margin-bottom: 12px;
+    background: #fff; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+
+  input.doneChk { position: absolute; opacity: 0; pointer-events: none; }
+  .stopCard {
+    background: #fff; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06); display: flex; gap: 10px; align-items: flex-start;
+    border-left: 5px solid #2E74B5; cursor: pointer;
+  }
+  input.doneChk:checked + .stopCard { opacity: 0.45; }
+  .chk {
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0;
+    margin-top: 2px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: transparent; background: #fff;
+  }
+  input.doneChk:checked + .stopCard .chk { background: #2E74B5; border-color: #2E74B5; color: #fff; }
+  input.doneChk:checked + .stopCard .chk::after { content: '✓'; }
+  .body { flex: 1; }
+  .time { font-size: 11.5px; color: #888; font-weight: 700; }
+  .name { font-size: 14px; font-weight: 700; color: #1F3864; margin: 2px 0; }
+  .note { font-size: 12.5px; color: #555; line-height: 1.4; }
+  .badge { display: inline-block; font-size: 10.5px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; font-weight: 700; }
+  .badge.must { background: #fde2e2; color: #a91d1d; }
+  .badge.resv { background: #fff0d6; color: #8a5a00; }
+  .wpNum {
+    display: inline-block; min-width: 16px; height: 16px; line-height: 16px; text-align: center;
+    border-radius: 50%; color: #fff; font-size: 10px; font-weight: 700; margin-right: 6px;
+  }
+  .day1 .wpNum { background: #2E74B5; }
+  .day2 .wpNum { background: #C0392B; }
+  .day3 .wpNum { background: #2E7D32; }
+  .hint { font-size: 11px; color: #999; text-align: center; margin: 14px 0 4px; }
+  .navBtn {
+    display: inline-block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: #03C75A;
+    border: 1px solid #03C75A; padding: 3px 10px; border-radius: 14px; text-decoration: none;
+  }
+</style>
+</head>
+<body>
+<input class="tabRadio" type="radio" name="tab" id="tab1" checked>
+<input class="tabRadio" type="radio" name="tab" id="tab2">
+<input class="tabRadio" type="radio" name="tab" id="tab3">
+
+<header>
+  <h1>속초 2박 3일 여행 플래너</h1>
+  <div class="sub">2026.8.14(금)~8.16(일) · 숙소: 모어 댄 속초 비치 브랜치</div>
+  <div id="tabs">
+    <label for="tab1">Day 1</label>
+    <label for="tab2">Day 2</label>
+    <label for="tab3">Day 3</label>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== DAY 1 ===================== -->
+  <div class="panel panel1 day1">
+    <div class="mapCard"><iframe loading="lazy" src="https://www.google.com/maps?saddr=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&daddr=%EC%84%A4%EC%95%85%EB%94%B8%EA%B8%B0%EB%AA%A8%EC%B0%8C%20%EC%86%8D%EC%B4%88+to:%ED%9D%B0%EB%8B%A4%EC%A0%95%20%EC%86%8D%EC%B4%88+to:%EC%98%A4%EB%B3%B5%EC%8B%9D%EB%8B%B9%20%EC%86%8D%EC%B4%88+to:%EC%86%8D%EC%B4%88%EC%95%84%EC%9D%B4%20%EB%8C%80%EA%B4%80%EB%9E%8C%EC%B0%A8+to:%EB%8B%AC%EB%B9%9B%EB%8F%88%EA%B0%80%20%EC%86%8D%EC%B4%88%EB%B3%B8%EC%A0%90+to:%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&output=embed"></iframe></div><a class="mapLinkBtn2" href="https://www.google.com/maps/dir/?api=1&origin=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&destination=%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&waypoints=%EC%84%A4%EC%95%85%EB%94%B8%EA%B8%B0%EB%AA%A8%EC%B0%8C%20%EC%86%8D%EC%B4%88%7C%ED%9D%B0%EB%8B%A4%EC%A0%95%20%EC%86%8D%EC%B4%88%7C%EC%98%A4%EB%B3%B5%EC%8B%9D%EB%8B%B9%20%EC%86%8D%EC%B4%88%7C%EC%86%8D%EC%B4%88%EC%95%84%EC%9D%B4%20%EB%8C%80%EA%B4%80%EB%9E%8C%EC%B0%A8%7C%EB%8B%AC%EB%B9%9B%EB%8F%88%EA%B0%80%20%EC%86%8D%EC%B4%88%EB%B3%B8%EC%A0%90&travelmode=driving">🗺 앱에서 전체 경로로 열기</a>
+
+    <input class="doneChk" type="checkbox" id="d1-1"><label for="d1-1" class="stopCard"><span class="chk"></span><div class="body"><div class="time">08:00</div><div class="name">속초 도착 · 짐 맡기기</div><div class="note">정식 체크인은 15:00부터</div></div></label>
+    <input class="doneChk" type="checkbox" id="d1-2"><label for="d1-2" class="stopCard"><span class="chk"></span><div class="body"><div class="time">08:30</div><div class="name">속초해수욕장 산책</div><div class="note">숙소 바로 앞</div></div></label>
+    <input class="doneChk" type="checkbox" id="d1-3"><label for="d1-3" class="stopCard"><span class="chk"></span><div class="body"><div class="time">09:30</div><div class="name"><span class="wpNum">1</span>설악딸기모찌</div><div class="note">간식 · 10:00~21:00(수 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.1905&dlng=128.5998&dname=%EC%84%A4%EC%95%85%EB%94%B8%EA%B8%B0%EB%AA%A8%EC%B0%8C&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-4"><label for="d1-4" class="stopCard"><span class="chk"></span><div class="body"><div class="time">10:30</div><div class="name"><span class="wpNum">2</span>흰다정</div><div class="note">카페(빙수) · 11:00~19:00(수 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.2093&dlng=128.5913&dname=%ED%9D%B0%EB%8B%A4%EC%A0%95&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-5"><label for="d1-5" class="stopCard"><span class="chk"></span><div class="body"><div class="time">12:30</div><div class="name"><span class="wpNum">3</span>오복식당</div><div class="note">점심(해물장칼국수) · 10:00~19:00(목 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.1939&dlng=128.5743&dname=%EC%98%A4%EB%B3%B5%EC%8B%9D%EB%8B%B9&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-6"><label for="d1-6" class="stopCard"><span class="chk"></span><div class="body"><div class="time">15:00</div><div class="name">호텔 체크인 · 수영장</div><div class="note">체크인 후 자유시간</div><a class="navBtn" href="nmap://route/car?dlat=38.1908&dlng=128.6028&dname=%EB%AA%A8%EC%96%B4%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-7"><label for="d1-7" class="stopCard"><span class="chk"></span><div class="body"><div class="time">17:30</div><div class="name"><span class="wpNum">4</span>속초아이 대관람차<span class="badge must">필수</span></div><div class="note">10:00~20:00 · 야경</div><a class="navBtn" href="nmap://route/car?dlat=38.1908&dlng=128.6028&dname=%EC%86%8D%EC%B4%88%EC%95%84%EC%9D%B4%20%EB%8C%80%EA%B4%80%EB%9E%8C%EC%B0%A8&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-8"><label for="d1-8" class="stopCard"><span class="chk"></span><div class="body"><div class="time">19:00</div><div class="name"><span class="wpNum">5</span>달빛돈가 속초본점<span class="badge resv">예약추천</span></div><div class="note">저녁(숙성고기)</div><a class="navBtn" href="nmap://route/car?dlat=38.1863&dlng=128.5976&dname=%EB%8B%AC%EB%B9%9B%EB%8F%88%EA%B0%80%20%EC%86%8D%EC%B4%88%EB%B3%B8%EC%A0%90&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d1-9"><label for="d1-9" class="stopCard"><span class="chk"></span><div class="body"><div class="time">20:30</div><div class="name"><span class="wpNum">6</span>속초역카페 (야식,선택)</div><div class="note">10:00~22:00</div><a class="navBtn" href="nmap://route/car?dlat=38.2032&dlng=128.5916&dname=%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <div class="hint">카드를 탭하면 체크 표시돼요 (이 세션 동안만 유지)</div>
+  </div>
+
+  <!-- ===================== DAY 2 ===================== -->
+  <div class="panel panel2 day2">
+    <div class="mapCard"><iframe loading="lazy" src="https://www.google.com/maps?saddr=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&daddr=%EB%8B%A8%EC%B2%9C%EC%8B%9D%EB%8B%B9%20%EC%86%8D%EC%B4%88+to:%EB%8B%A4%EB%B3%B5%ED%99%8D%EA%B2%8C%EB%9D%BC%EB%A9%B4%20%EC%86%8D%EC%B4%88+to:%EB%A7%8C%EC%84%9D%EB%8B%AD%EA%B0%95%EC%A0%95%20%EC%A4%91%EC%95%99%EC%8B%9C%EC%9E%A5%EC%A0%90+to:%EC%98%A5%EB%9E%80%ED%91%B8%EB%94%A9%20%EC%86%8D%EC%B4%88+to:%EC%86%8D%EC%B4%88%EB%8F%99%EA%B2%BD+to:%EC%A3%BC%EC%98%A4%EC%9D%BC%EC%8B%AC%EC%95%BC%EB%9D%BC%EB%A9%98%20%EC%86%8D%EC%B4%88&output=embed"></iframe></div><a class="mapLinkBtn2" href="https://www.google.com/maps/dir/?api=1&origin=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&destination=%EC%A3%BC%EC%98%A4%EC%9D%BC%EC%8B%AC%EC%95%BC%EB%9D%BC%EB%A9%98%20%EC%86%8D%EC%B4%88&waypoints=%EB%8B%A8%EC%B2%9C%EC%8B%9D%EB%8B%B9%20%EC%86%8D%EC%B4%88%7C%EB%8B%A4%EB%B3%B5%ED%99%8D%EA%B2%8C%EB%9D%BC%EB%A9%B4%20%EC%86%8D%EC%B4%88%7C%EB%A7%8C%EC%84%9D%EB%8B%AD%EA%B0%95%EC%A0%95%20%EC%A4%91%EC%95%99%EC%8B%9C%EC%9E%A5%EC%A0%90%7C%EC%98%A5%EB%9E%80%ED%91%B8%EB%94%A9%20%EC%86%8D%EC%B4%88%7C%EC%86%8D%EC%B4%88%EB%8F%99%EA%B2%BD&travelmode=driving">🗺 앱에서 전체 경로로 열기</a>
+
+    <input class="doneChk" type="checkbox" id="d2-1"><label for="d2-1" class="stopCard"><span class="chk"></span><div class="body"><div class="time">11:00</div><div class="name">기상 · 준비</div><div class="note">평균 기상 11시 기준</div></div></label>
+    <input class="doneChk" type="checkbox" id="d2-2"><label for="d2-2" class="stopCard"><span class="chk"></span><div class="body"><div class="time">12:00</div><div class="name"><span class="wpNum">1</span>단천식당 (아침,선택)</div><div class="note">브런치 겸 · 08:30~19:00</div><a class="navBtn" href="nmap://route/car?dlat=38.2026&dlng=128.5937&dname=%EB%8B%A8%EC%B2%9C%EC%8B%9D%EB%8B%B9&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d2-3"><label for="d2-3" class="stopCard"><span class="chk"></span><div class="body"><div class="time">14:00</div><div class="name"><span class="wpNum">2</span>다복홍게라면</div><div class="note">점심 · 10:00~20:00(수 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.2051&dlng=128.5904&dname=%EB%8B%A4%EB%B3%B5%ED%99%8D%EA%B2%8C%EB%9D%BC%EB%A9%B4&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d2-4"><label for="d2-4" class="stopCard"><span class="chk"></span><div class="body"><div class="time">15:00</div><div class="name"><span class="wpNum">3</span>중앙시장 먹거리 투어<span class="badge must">필수</span></div><div class="note">만석닭강정(필수)·팡파미유·벌집아이스크림</div><a class="navBtn" href="nmap://route/car?dlat=38.2044&dlng=128.59&dname=%EB%A7%8C%EC%84%9D%EB%8B%AD%EA%B0%95%EC%A0%95%20%EC%A4%91%EC%95%99%EC%8B%9C%EC%9E%A5%EC%A0%90&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d2-5"><label for="d2-5" class="stopCard"><span class="chk"></span><div class="body"><div class="time">16:15</div><div class="name"><span class="wpNum">4</span>옥란푸딩</div><div class="note">간식 · 10:30~18:30(목 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.1865&dlng=128.6036&dname=%EC%98%A5%EB%9E%80%ED%91%B8%EB%94%A9&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d2-6"><label for="d2-6" class="stopCard"><span class="chk"></span><div class="body"><div class="time">17:00</div><div class="name">휴식 · 수영장</div><div class="note">숙소로 복귀</div></div></label>
+    <input class="doneChk" type="checkbox" id="d2-7"><label for="d2-7" class="stopCard"><span class="chk"></span><div class="body"><div class="time">18:00</div><div class="name">자유시간</div><div class="note">자유</div></div></label>
+    <input class="doneChk" type="checkbox" id="d2-8"><label for="d2-8" class="stopCard"><span class="chk"></span><div class="body"><div class="time">19:00</div><div class="name"><span class="wpNum">5</span>속초동경</div><div class="note">저녁(오코노미야끼) · 15:00~24:00(화 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.2022&dlng=128.5846&dname=%EC%86%8D%EC%B4%88%EB%8F%99%EA%B2%BD&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d2-9"><label for="d2-9" class="stopCard"><span class="chk"></span><div class="body"><div class="time">21:00</div><div class="name"><span class="wpNum">6</span>주오일심야라멘 (야식,선택)</div><div class="note">11:00~익일01:00(화·수 휴무)</div><a class="navBtn" href="nmap://route/car?dlat=38.2141&dlng=128.5912&dname=%EC%A3%BC%EC%98%A4%EC%9D%BC%EC%8B%AC%EC%95%BC%EB%9D%BC%EB%A9%98&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <div class="hint">카드를 탭하면 체크 표시돼요 (이 세션 동안만 유지)</div>
+  </div>
+
+  <!-- ===================== DAY 3 ===================== -->
+  <div class="panel panel3 day3">
+    <div class="mapCard"><iframe loading="lazy" src="https://www.google.com/maps?saddr=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&daddr=%EB%8F%88%EC%9A%B0%EB%A7%88%EC%9D%84%20%EC%86%8D%EC%B4%88+to:%EB%9D%BC%EB%98%90%EB%9E%98%EC%9A%94%20%EC%86%8D%EC%B4%88%20%EC%A0%A4%EB%9D%BC%EB%98%90+to:%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&output=embed"></iframe></div><a class="mapLinkBtn2" href="https://www.google.com/maps/dir/?api=1&origin=%EB%AA%A8%EC%96%B4%20%EB%8C%84%20%EC%86%8D%EC%B4%88%20%EB%B9%84%EC%B9%98%20%EB%B8%8C%EB%9E%9C%EC%B9%98%2C%20%EC%86%8D%EC%B4%88%EC%8B%9C%20%EC%A4%91%EC%95%99%EB%A1%9C%20266&destination=%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&waypoints=%EB%8F%88%EC%9A%B0%EB%A7%88%EC%9D%84%20%EC%86%8D%EC%B4%88%7C%EB%9D%BC%EB%98%90%EB%9E%98%EC%9A%94%20%EC%86%8D%EC%B4%88%20%EC%A0%A4%EB%9D%BC%EB%98%90&travelmode=driving">🗺 앱에서 전체 경로로 열기</a>
+
+    <input class="doneChk" type="checkbox" id="d3-1"><label for="d3-1" class="stopCard"><span class="chk"></span><div class="body"><div class="time">11:00</div><div class="name">기상 · 짐 정리, 체크아웃</div><div class="note">호텔 기본 체크아웃 11:00</div></div></label>
+    <input class="doneChk" type="checkbox" id="d3-2"><label for="d3-2" class="stopCard"><span class="chk"></span><div class="body"><div class="time">11:30</div><div class="name">마지막 해변 산책</div><div class="note">숙소 바로 앞</div></div></label>
+    <input class="doneChk" type="checkbox" id="d3-3"><label for="d3-3" class="stopCard"><span class="chk"></span><div class="body"><div class="time">12:30</div><div class="name"><span class="wpNum">1</span>돈우마을</div><div class="note">점심(갈비) · 11:30~23:30</div><a class="navBtn" href="nmap://route/car?dlat=38.1904&dlng=128.5886&dname=%EB%8F%88%EC%9A%B0%EB%A7%88%EC%9D%84&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d3-4"><label for="d3-4" class="stopCard"><span class="chk"></span><div class="body"><div class="time">14:00</div><div class="name"><span class="wpNum">2</span>라또래요(젤라또)</div><div class="note">간식 · 11:00~17:00(일)</div><a class="navBtn" href="nmap://route/car?dlat=38.2141&dlng=128.5963&dname=%EB%9D%BC%EB%98%90%EB%9E%98%EC%9A%94&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d3-5"><label for="d3-5" class="stopCard"><span class="chk"></span><div class="body"><div class="time">15:00</div><div class="name"><span class="wpNum">3</span>속초역카페</div><div class="note">카페 · 10:00~22:00</div><a class="navBtn" href="nmap://route/car?dlat=38.2032&dlng=128.5916&dname=%EC%86%8D%EC%B4%88%EC%97%AD%EC%B9%B4%ED%8E%98&appname=com.sokcho.tripapp">🧭 네이버지도 길찾기</a></div></label>
+    <input class="doneChk" type="checkbox" id="d3-6"><label for="d3-6" class="stopCard"><span class="chk"></span><div class="body"><div class="time">16:00</div><div class="name">귀가 출발</div><div class="note">안전운전!</div></div></label>
+    <div class="hint">카드를 탭하면 체크 표시돼요 (이 세션 동안만 유지)</div>
+  </div>
+</main>
+</body>
+</html>
